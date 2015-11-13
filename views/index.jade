@@ -1,0 +1,16 @@
+doctype html
+html(lang="en")
+  head
+    title= title
+  body
+    h1= title
+    form(method="post", action="/pizzas")
+      input(type="text", name="pizza[name]", placeholder="title")
+      input(type="text", name="pizza[toppings][]", placeholder="topping")
+      input(type="text", name="pizza[toppings][]", placeholder="topping")
+      input(type="submit", value="Submit")
+    hr
+    each pizza in pizzas
+      p
+        a(href='/pizzas/' + pizza.id) #{pizza.name}
+      
