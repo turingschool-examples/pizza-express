@@ -76,13 +76,13 @@ Fire up the server using `node server.js` and visit `http://localhost:3000/` to 
 
 ## Unit Testing Our Server
 
-Alright, we have a server and we can test it by hand. But, testing by hand gets old pretty fast. It would be nice if we could have some kind of automated testing, right? Yea, I agree. We are going to need to make some modifications to your existing little application, though.
+Alright, we have a server and we can test it by visiting the page manually. But, testing by hand gets old pretty fast. It would be nice if we could have some kind of automated testing, right? Yea, I agree. We are going to need to make some modifications to your existing little application, though.
 
-As it stands, whenever `server.js` is run, it fires up the application. Generally speaking, this is what we want if we're just running the server. But it's not necessarily what we want if we're trying to grab it from our tests to poke at it.
+As it stands, whenever `server.js` is run, it fires up the web server. Generally speaking, this is what we want if we're just running `node server.js`. But it's not necessarily what we want if we're trying to grab it from our tests to poke at it.
 
 In that scenario, we _do not_ want it to just start up all on it's own.
 
-So, what we need to do is to add some introspection and see if our application is being run directly or being required from another file. We can do this by modifying our server slightly.
+What we need to do is to add some introspection and see if our application is being run directly or being required from another file. We can do this by modifying our server slightly.
 
 ```js
 if (!module.parent) {
@@ -186,7 +186,7 @@ const request = require('request');
 
 Alright, we've set everything up. Now, we can write our first test. Our app is pretty simple. So, let's start by making sure that we have a `/` endpoint and that it returns a 200 response.
 
-Nested in our `describe('Server')` section, we'll add a `describe('/')` section as well. Our test suite will look something like this:
+Nested in our `describe('Server')` section, we'll add a `describe('GET /')` section as well. Our test suite will look something like this:
 
 ```js
 const assert = require('assert');
@@ -211,7 +211,7 @@ describe('Server', () => {
     assert(app);
   });
 
-  describe('/', () => {
+  describe('GET /', () => {
     // Our tests will go here.
   });
 
@@ -229,7 +229,7 @@ it('should return a 200', (done) => {
 });
 ```
 
-Again, note that it's a Node convention to pass any errors as the first argument. We can improve the quality of the error messages we get from our test suite if we catch that error.
+Again, it's a Node convention to pass any errors as the first argument—and Request is going to go ahead and follow that convention. We can improve the quality of the error messages we get from our test suite if we catch that error.
 
 ```js
 it('should return a 200', (done) => {
@@ -289,7 +289,7 @@ app.locals.title = 'Pizza Express';
 
 If we stored them as local variables, then they would have been trapped in that modules closure. But, as properties on the application, we can access them other places—like our tests and our views.
 
-You probably noticed that we used `app.set()` to set the properties. Conversely, we can use `app.get()` to fetch the properties. `app.locals` and `app.get()` have a lot in common, the former is primary for things we want to share in our templates and/or tests and the latter is for configuration details.
+We used `app.set()` to set the port. Conversely, we can use `app.get()` to fetch the properties. `app.locals` and `app.get()` have a lot in common, the former is primarily for things we want to share in our templates and/or tests and the latter is for configuration details.
 
 Right now, our `/` endpoint just says "Hello World!". That's neat. Let's use a little old fashioned TDD to change that to display the name of our application.
 
@@ -355,7 +355,6 @@ In `static/index.html`, we'll add the following:
   </head>
   <body>
     <h1>Pizza Express</h1>
-    </div>
   </body>
 </html>
 ```
@@ -382,7 +381,7 @@ Having a directory for static assets is incredibly useful because we'll probably
 app.use(express.static('static'));
 ```
 
-By default, `express.static` serves everything in the `static` directory from the root. That said, it doesn't do the thing where it will serve `index.html` if no file name is given—like Apache or some other static asset webserver would. We would likely combine both of these approaches to because Express won't serve `index.html` at `/` otherwise.
+By default, `express.static` serves everything in the `static` directory from the root. That said, it doesn't do the thing where it will serve `index.html` if no file name is given—like Apache or some other static asset web server would. We would likely combine both of these approaches to because Express won't serve `index.html` at `/` otherwise.
 
 At this moment, your `server.js` should look something like the code sample below and your tests should be passing.
 
@@ -441,9 +440,10 @@ By default, Express will look for views in a `views` directory. Let's go ahead a
 ```
 mkdir views
 touch index.jade
+rm static/index.html
 ```
 
-For now, we'll convert the contents of `static/index.html` to `views/index.jade` as is. It will look like this:
+For now, we'll convert the contents of `static/index.html` to `views/index.jade`. It will look like this:
 
 ```jade
 doctype html
@@ -532,7 +532,7 @@ it('should not return 404', (done) => {
 
  Run the suite, watch it burn. We need to add this route in `server.js` in order to pass this test.
 
- ```
+ ```js
  app.post('/pizzas', (request, response) => {
    response.sendStatus(201);
  });
