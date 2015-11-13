@@ -61,7 +61,7 @@ const express = require('express');
 const app = express();
 
 app.set('port', process.env.PORT || 3000);
-app.set('title', 'Pizza Express');
+app.locals.title = 'Pizza Express';
 
 app.get('/', (request, response) => {
   response.send('Hello World!');
@@ -284,12 +284,12 @@ Awesome. Now, let's write a test verifying the content of the page located at `/
 
 ```js
 app.set('port', process.env.PORT || 3000);
-app.set('title', 'Pizza Express');
+app.locals.title = 'Pizza Express';
 ```
 
 If we stored them as local variables, then they would have been trapped in that modules closure. But, as properties on the application, we can access them other places—like our tests and our views.
 
-You probably noticed that we used `app.set()` to set the properties. Conversely, we can use `app.get()` to fetch the properties.
+You probably noticed that we used `app.set()` to set the properties. Conversely, we can use `app.get()` to fetch the properties. `app.locals` and `app.get()` have a lot in common, the former is primary for things we want to share in our templates and/or tests and the latter is for configuration details.
 
 Right now, our `/` endpoint just says "Hello World!". That's neat. Let's use a little old fashioned TDD to change that to display the name of our application.
 
@@ -395,7 +395,7 @@ const path = require('path');
 app.use(express.static('static'));
 
 app.set('port', process.env.PORT || 3000);
-app.set('title', 'Pizza Express');
+app.locals.title = 'Pizza Express';
 
 app.get('/', (request, response) => {
   response.sendFile(path.join(__dirname, '/static/index.html'));
@@ -488,7 +488,7 @@ This means that if our server crashes for any reason, we'll lose everything. Hon
 In `server.js`, we'll set up a plain-old JavaScript object that will play the proud role of a key-value store.
 
 ```js
-app.set('pizzas', {});
+app.locals.pizzas = {};
 ```
 
 That's it. We could just as easily set it as a local variable or constant and export it as part of `module.exports`. But, we'll set it as a property on our application for now so that we can access it in our tests easily without having to modify a bunch of our server's code.
@@ -570,7 +570,7 @@ So, in our `POST /pizzas` block, let's reset the datastore before each test.
 describe('POST /pizzas', () => {
 
   beforeEach(() => {
-    app.set('pizzas', {});
+    app.locals.pizzas = {};
   });
 
   // Our tests live down here…
@@ -690,8 +690,8 @@ app.engine('handlebars', handlebars);
 app.set('view engine', 'handlebars');
 
 app.set('port', process.env.PORT || 3000);
-app.set('title', 'Pizza Express');
-app.set('pizzas', {});
+app.locals.title = 'Pizza Express';
+app.locals.pizzas = {};
 
 app.get('/', (request, response) => {
   response.render('index');
@@ -770,7 +770,7 @@ describe('Server', () => {
   describe('POST /pizzas', () => {
 
     beforeEach(() => {
-      app.set('pizzas', {});
+      app.locals.pizzas = {};
     });
 
     it('should not return 404', (done) => {
@@ -838,7 +838,7 @@ it('should receive and store data', (done) => {
   this.request.post('/pizzas', { form: payload }, (error, response) => {
     if (error) { done(error); }
 
-    var pizzaCount = Object.keys(app.get('pizzas')).length;
+    var pizzaCount = Object.keys(app.locals.pizzas).length;
 
     assert.equal(pizzaCount, 1, `Expected 1 pizzas, found ${pizzaCount}`);
 
@@ -972,7 +972,7 @@ Let's take a look at our test route for posting a new pizza.
 app.post('/pizzas', (request, response) => {
   var id = generateId();
 
-  app.get('pizzas')[id] = request.body.pizza;
+  app.locals.pizzas[id] = request.body.pizza;
 
   response.sendStatus(201);
 });
@@ -1036,7 +1036,7 @@ Hopefully, you noticed the following:
 
 - Express applications aren't anything special, you can pass them around and require them just like any other object in JavaScript.
 - Doing stuff by hand can be hard. Typically, we're used to having large frameworks like Rails abstract a lot of stuff away from us. It's definitely a trade off and there is no right answer. We worked pretty hard on this application, but we don't really have much in the way of validation or any abstractions around fetching and persisting models.
-- Asynchrous code can be hard, but it has some powerful advantages. For example, Mocha is able to run multiple tests simultaneously while we wait for a given request to come back. This means as our application grows, the test suite will likely be faster than a similar sized Ruby code base.
+- Asynchronous code can be hard, but it has some powerful advantages. For example, Mocha is able to run multiple tests simultaneously while we wait for a given request to come back. This means as our application grows, the test suite will likely be faster than a similar sized Ruby code base.
 
 There are frameworks and tools built on top of Express that make it easier to build complicated applications. If this is something you're interested in, check out [Endpoints](http://endpointsjs.com/).
 
