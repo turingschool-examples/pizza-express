@@ -423,7 +423,11 @@ There are a number of view template languages out there for Node.
 
 It's worth stopping for a few moments and exploring the options above. It's ultimately a matter of taste. Go ahead, I'll wait.
 
-Jade comes with Express, so we'll use that. This is a lesson on working with and testing Express, not template languages.
+For a while, Jade came packaged with Express, so we'll use that. It's also fairly easy to set up. This is a lesson on working with and testing Express, not template languages. Let's install it.
+
+```
+npm install jade --save
+```
 
 Next, we'll tell Express that this is the template language that we're using.
 
