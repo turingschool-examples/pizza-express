@@ -166,9 +166,7 @@ Let's go ahead and run our tests using `npm test` to make sure nothing has broke
 
 ### Making Requests To Our Server
 
-Now that we have our server running in our tests. We can make requests to it. We could totally do this using the built-in `http` module but that's pretty low-level. Let's use a library called [Request][] instead.
-
-[Request]: https://github.com/request/request
+Now that we have our server running in our tests. We can make requests to it. We could totally do this using the built-in `http` module but that's pretty low-level. Let's use a library called [Request][https://github.com/request/request] instead.
 
 ```
 npm i request --save-dev
@@ -249,7 +247,7 @@ Change the port in the `before` hook to another number. Run the test suite and w
 
 Another problem with this test is that we hard-coded in the port and the server. First off, this is tedious. Secondly, if we did want to read the port from an environment variable or something like that, this wouldn't work. But most importantly: this is tedious.
 
-Request allows us to set defaults. `request.defaults()` will return a wrapped version of Request with some of the parameters already applied. (Take a moment and fondly recall closures and currying in JavaScript.)
+Request allows us to set defaults. `request.defaults()` will return a wrapped version of Request with some of the parameters already applied. (Take a moment and fondly recall [closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures) and [currying](http://www.sitepoint.com/currying-in-functional-javascript/) in JavaScript.)
 
 In this suite, we're always going to be hitting our test server. So, let's set those as defaults in the `before` hook.
 
@@ -334,7 +332,7 @@ Run your tests and verify that they pass.
 
 ## Serving Static Assets
 
-You could serve raw HTML files. That will work and it might be the right approach for your projects. But, in the name of education, let's talk about how to work use views with your Express application.
+You could serve raw HTML files. That will work and it might be the right approach for your projects. But, in the name of education, let's talk about how to use views with your Express application.
 
 Right now, we're sending snippets of text using `response.send()`.
 
@@ -359,7 +357,7 @@ In `static/index.html`, we'll add the following:
 </html>
 ```
 
-We can send an entire file using `response.sendFile()` and passing in the locaton of the file we're looking to send. For example, let's say we had an `index.html` inside of the `static` directory.
+We can send an entire file using `response.sendFile()` and passing in the location of the file we're looking to send. For example, let's say we had an `index.html` inside of the `static` directory.
 
 ```js
 // (Require express and other libraries…)
@@ -381,7 +379,7 @@ Having a directory for static assets is incredibly useful because we'll probably
 app.use(express.static('static'));
 ```
 
-By default, `express.static` serves everything in the `static` directory from the root. That said, it doesn't do the thing where it will serve `index.html` if no file name is given—like Apache or some other static asset web server would. We would likely combine both of these approaches to because Express won't serve `index.html` at `/` otherwise.
+By default, `express.static` serves everything in the `static` directory from the root. That said, it doesn't serve `index.html` if no file name is given—like Apache or some other static asset web server would. We would likely combine both of these approaches because Express won't serve `index.html` at `/` otherwise.
 
 At this moment, your `server.js` should look something like the code sample below and your tests should be passing.
 
@@ -443,7 +441,7 @@ By default, Express will look for views in a `views` directory. Let's go ahead a
 
 ```
 mkdir views
-touch index.jade
+touch views/index.jade
 rm static/index.html
 ```
 
@@ -458,7 +456,7 @@ html(lang="en")
     h1 "Pizza Express"
 ```
 
-We'll need to be introduced to another method on the `response` object—the `response.render()` method.
+We'll need to get acquainted with another method on the `response` object — the `response.render()` method.
 
 Modify your route accordingly:
 
@@ -546,7 +544,7 @@ it('should not return 404', (done) => {
 
 ### Sending Data With Our Post Request
 
-Express did this thing a while back, where they took a bunch of stuff out of the core framework. This makes it smaller and means you don't have cruft you're not using, but it also means that sometimes you have to mix those things back in. One of those components that was pull out was the ability to parse the body of an HTTP request. That's okay, we can just mix it back in.
+Express did this thing a while back, where they took a bunch of stuff out of the core framework. This makes it smaller and means you don't have cruft you're not using, but it also means that sometimes you have to mix those things back in. One of those components that was pulled out was the ability to parse the body of an HTTP request. That's okay, we can just mix it back in.
 
 ```
 npm i body-parser --save
@@ -564,7 +562,7 @@ This will add in support for parsing JSON as well as HTML forms. If you only nee
 
 #### Cleaning the Slate Between Tests
 
-One of the reasons that tests fail is because they're not working with a clean slate. We're count to be counting objects in the data store and making sure that we have we think we ought to have at any given moment.
+One of the reasons that tests fail is because they're not working with a clean slate. We are going to be counting the objects in the data store and make sure that we have what we ought to have at any given moment.
 
 What we don't need is other tests messing with our tenuous grip on reality.
 
@@ -682,7 +680,6 @@ const express = require('express');
 const app = express();
 
 const path = require('path');
-const handlebars  = require('express-handlebars');
 const bodyParser = require('body-parser');
 
 const generateId = require('./lib/generate-id');
@@ -690,7 +687,6 @@ const generateId = require('./lib/generate-id');
 app.use(express.static('static'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.engine('handlebars', handlebars);
 app.set('view engine', 'handlebars');
 
 app.set('port', process.env.PORT || 3000);
@@ -916,13 +912,13 @@ it('should return a page that has the title of the pizza', (done) => {
 });
 ```
 
-We're making the request, but right now, we're only sending the status code. We're not actually sending anything yet. As a result, we're getting an error message that looks something like this:
+We're making the request, but right now, we're only sending the status code. We're not actually sending any data yet. As a result, we're getting an error message that looks something like this:
 
 ```
 Uncaught AssertionError: "OK" does not include "undefined".
 ```
 
-So, let's render a page like we did with the `/` route. We'll need another Handlebars file for this.
+So, let's render a page like we did with the `/` route. We'll need another jade file for this.
 
 ```
 touch views/pizza.jade
@@ -1048,4 +1044,4 @@ There are frameworks and tools built on top of Express that make it easier to bu
 
 We didn't touch integration testing. Right now, all of our tests that check for content get the HTTP response as a giant string of text and see if a given substring is in there. There is no concept of DOM traversal or querying at this time.
 
-If we wanted to that, we'd have to look at something like [Phantom.js](http://phantomjs.org/) or [Nightmare](http://www.nightmarejs.org/).
+If we wanted that, we'd have to look at something like [Phantom.js](http://phantomjs.org/) or [Nightmare](http://www.nightmarejs.org/).
