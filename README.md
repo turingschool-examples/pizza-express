@@ -21,7 +21,7 @@ mkdir pizza-express
 cd pizza-express
 ```
 
-Let's get our `.package.json` off to a good start as well.
+Let's get our `package.json` off to a good start as well.
 
 ```
 npm init
