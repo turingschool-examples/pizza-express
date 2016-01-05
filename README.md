@@ -373,7 +373,7 @@ app.get('/', (request, response) => {
 
 Run your tests. They should be passing.
 
-Having a directory for static assets is incredibly useful because we'll probably want to serve fun stuff like CSS and and client-side JavaScript one day.
+Having a directory for static assets is incredibly useful because we'll probably want to serve fun stuff like CSS and client-side JavaScript one day.
 
 ```js
 app.use(express.static('static'));
@@ -466,7 +466,7 @@ app.get('/', (request, response) => {
 });
 ```
 
-Run you're tests and verify that everything passes. It should. But, we're not out of the woods yet. We need to modify `views/index.js` to use the values we pass in. Let's modify `views/index.js` to do just that.
+Run your tests and verify that everything passes. It should. But, we're not out of the woods yet. We need to modify `views/index.js` to use the values we pass in. Let's modify `views/index.js` to do just that.
 
 ```jade
 doctype html
