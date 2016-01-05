@@ -466,7 +466,7 @@ app.get('/', (request, response) => {
 });
 ```
 
-Run you're tests and verify that everything passes. It should. But, we're not out of the woods yet. We need to modify `views/index.js` to use the values we pass in. Let's modify `views/index.js` to do just that.
+Run you're tests and verify that everything passes. It should. But, we're not out of the woods yet. We need to modify `views/index.jade` to use the values we pass in. Let's modify `views/index.jade` to do just that.
 
 ```jade
 doctype html
