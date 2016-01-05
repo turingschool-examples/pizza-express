@@ -409,7 +409,7 @@ module.exports = app;
 
 ### Rendering views
 
-We did have a small regression when we went from sending some arbitrary text with `response.send()` to sending an full HTML file with `response.sendFile()`. We're no longer dynamically inserting the title of the application in the response. It's hard-coded in that HTML file. Whoops.
+We did have a small regression when we went from sending some arbitrary text with `response.send()` to sending a full HTML file with `response.sendFile()`. We're no longer dynamically inserting the title of the application in the response. It's hard-coded in that HTML file. Whoops.
 
 There really isn't a way to get around this. Our HTML is a static asset. It's static. We're going to need something more dynamic.
 
