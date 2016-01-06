@@ -687,7 +687,7 @@ const generateId = require('./lib/generate-id');
 app.use(express.static('static'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.set('view engine', 'handlebars');
+app.set('view engine', 'jade');
 
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Pizza Express';
