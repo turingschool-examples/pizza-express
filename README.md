@@ -4,7 +4,7 @@
 
 ## Preamble
 
-In this tutorial, we're going to build and test an Express application from the ground up—using what you would primarily think of in Rails as controller tests. The goal of the this tutorial is to get super deep into a very small set of things so that you understand how they work.
+In this tutorial, we're going to build and test an Express application from the ground up—using what you would primarily think of in Rails as controller tests. The goal of this tutorial is to get super deep into a very small set of things so that you understand how they work.
 
 We're going to keep the use of external tools and libraries to a minimum. As a result, it may get a bit tedious at times, but at the end, you'll have an understanding of how the sausage gets made, so to speak.
 
@@ -82,7 +82,7 @@ As it stands, whenever `server.js` is run, it fires up the web server. Generally
 
 In that scenario, we _do not_ want it to just start up all on it's own.
 
-What we need to do is to add some introspection and see if our application is being run directly or being required from another file. We can do this by modifying our server slightly.
+What we need to do is add some introspection and see if our application is being run directly or being required from another file. We can do this by modifying our server slightly.
 
 ```js
 if (!module.parent) {
@@ -373,7 +373,7 @@ app.get('/', (request, response) => {
 
 Run your tests. They should be passing.
 
-Having a directory for static assets is incredibly useful because we'll probably want to serve fun stuff like CSS and and client-side JavaScript one day.
+Having a directory for static assets is incredibly useful because we'll probably want to serve fun stuff like CSS and client-side JavaScript one day.
 
 ```js
 app.use(express.static('static'));
@@ -466,7 +466,7 @@ app.get('/', (request, response) => {
 });
 ```
 
-Run you're tests and verify that everything passes. It should. But, we're not out of the woods yet. We need to modify `views/index.js` to use the values we pass in. Let's modify `views/index.js` to do just that.
+Run your tests and verify that everything passes. It should. But, we're not out of the woods yet. We need to modify `views/index.jade` to use the values we pass in. Let's modify `views/index.jade` to do just that.
 
 ```jade
 doctype html
@@ -483,7 +483,7 @@ We'll run our tests one more time and make sure that everything works as it shou
 
 So far, we've covered how to unit test a `GET` request, but, what about sending information to our application?
 
-First, we'll need somewhere to put this information when it's received. In a production application, you'd likely use some kind of data storage. In an attempt to stay on topic. We'll sidestep that for now and just store everything in memory.
+First, we'll need somewhere to put this information when it's received. In a production application, you'd likely use some kind of data storage. In an attempt to stay on topic, we'll sidestep that for now and just store everything in memory.
 
 This means that if our server crashes for any reason, we'll lose everything. Honestly, we don't have anything of value at this point—so, whatever.
 
@@ -887,7 +887,7 @@ it('should not return 404', (done) => {
 });
 ```
 
-Let's run the tests and watch our new one fail miserably. That route does, in fact, return a 404. Bummer. Well, I guess we'll have to go ahead and implement it I suppose. We'll add the route to `server.js`.
+Let's run the tests and watch our new one fail miserably. That route does, in fact, return a 404. Bummer. Well, I suppose we'll just have to go ahead and implement it. We'll add the route to `server.js`.
 
 ```js
 app.get('/pizzas/:id', (request, response) => {
