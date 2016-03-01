@@ -166,7 +166,7 @@ Let's go ahead and run our tests using `npm test` to make sure nothing has broke
 
 ### Making Requests To Our Server
 
-Now that we have our server running in our tests. We can make requests to it. We could totally do this using the built-in `http` module but that's pretty low-level. Let's use a library called [Request][https://github.com/request/request] instead.
+Now that we have our server running in our tests. We can make requests to it. We could totally do this using the built-in `http` module but that's pretty low-level. Let's use a library called [Request](https://github.com/request/request) instead.
 
 ```
 npm i request --save-dev
