@@ -978,7 +978,7 @@ app.post('/pizzas', (request, response) => {
 });
 ```
 
-We just send a 201 and call it a day. It would be better if we redirected the user to their hot, fresh pizza page. Let's write a test and see how it goes.
+We just send a 201 and call it a day. It would be better if we redirected the user to their hot, fresh pizza page. Let's write a test and see how it goes. This test should go in the describe 'POST /pizzas' block, not the 'GET /pizzas' block. 
 
 ```js
 it('should redirect the user to their new pizza', (done) => {
