@@ -379,7 +379,7 @@ Having a directory for static assets is incredibly useful because we'll probably
 app.use(express.static('static'));
 ```
 
-By default, `express.static` serves everything in the `static` directory from the root. That said, it doesn't serve `index.html` if no file name is given—like Apache or some other static asset web server would. We would likely combine both of these approaches because Express won't serve `index.html` at `/` otherwise.
+By default, `express.static` serves everything in the `static` directory from the root. While Express will automatically serve index.html as '/' we'll be explicit to get in the habit.
 
 At this moment, your `server.js` should look something like the code sample below and your tests should be passing.
 
